@@ -1,0 +1,6 @@
+	lee	:	READ 1
+			LOAD 1
+			JZERO fin
+			WRITE 1
+			JUMP lee
+	fin	:	HALT
