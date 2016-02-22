@@ -45,7 +45,9 @@ public class RAM {
             while (token.hasMoreTokens())
               System.out.println(token.nextToken());*/
         
-        Maquina prueba = new Maquina("test2.ram", "Datos.txt");
+        Maquina prueba = new Maquina("test4.ram", "Datos.txt");
+        for (int i = 0; i < prueba.get_size(); i++)
+          System.out.println(prueba.get_fila(i).get_etq() + " " + prueba.get_fila(i).get_ins() + " " + prueba.get_fila(i).get_dir() + " " + prueba.get_fila(i).get_ele());
         prueba.run();
         
     }

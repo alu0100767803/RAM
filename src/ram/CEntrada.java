@@ -33,6 +33,7 @@ public class CEntrada {
       if(clectura < cadenae.size()){  // En este bucle if puede que haya fallos de acceder a memoria
         int aux = cadenae.get(clectura);
         clectura++;
+        System.out.println(aux);
         return aux;
       }
   

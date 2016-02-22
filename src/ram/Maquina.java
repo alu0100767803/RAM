@@ -51,6 +51,8 @@ public class Maquina {
        else if ((i == token.length-1) && (!token[i].equals(":"))){ //Comprueba si es un numero o simbolo
          if (token[i].equals("HALT"))
            aux_ins = new String(token[i]);
+         else if ((aux_ins.equals("JUMP")) || (aux_ins.equals("JZERO")) || (aux_ins.equals("JGTZ")))
+           aux_dir = new String(token[i]);
          else{
            //divide el ultimo token en 2 si es necesario en direccionamiento y valor
            String prueba = token[i];
@@ -59,6 +61,7 @@ public class Maquina {
              aux_dir = Character.toString(aux[0]);
              aux_ele =  Character.getNumericValue(aux[1]); //modificado
            }
+           
            else
              aux_ele =Character.getNumericValue(aux[0]); //modificado
           }
@@ -79,18 +82,22 @@ public class Maquina {
     while(!bucle){
       switch(ram.get(aux).get_ins()){
           case "LOAD":
+              System.out.println("Estoy accediendo a load");
               load(aux);
               aux++;
               break;
           case "STORE":
+              System.out.println("Estoy accediendo a store");
               store(aux);
               aux++;
               break;
           case "READ":
+              System.out.println("Estoy accediendo a read");
               read(aux); 
               aux++;
               break;
           case "WRITE":
+              System.out.println("Estoy entrando a write");
               write(aux); 
               aux++;
               break;
@@ -99,11 +106,15 @@ public class Maquina {
               aux++;
               break;
           case "SUB":
+              System.out.println("Estoy accediendo a sub");
               sub(aux); 
+              System.out.println("resta : " + acumulador);
               aux++;
               break;
           case "MUL":
+              System.out.println("Estoy accediendo a mul");
               mul(aux); 
+              System.out.println("mul : " + acumulador);
               aux++;
               break;
           case "DIV":
@@ -111,17 +122,20 @@ public class Maquina {
               aux++;
               break;
           case "HALT":
+              System.out.println("Estoy accediendo a halt");
               halt();
               aux = 0;
               break;
           case "JUMP":
-              aux = jump(aux); //falta implementar
+              System.out.println("Estoy accediendo a jump");
+              aux = jump(aux); 
               break;
           case "JZERO":
-              aux = jzero(aux); //falta implementar
+              aux = jzero(aux); 
               break;
           case "JGTZ":
-              aux = jgtz(aux); //falta implementar
+              System.out.println("Estoy accediendo a jgtz");
+              aux = jgtz(aux); 
               break;
           default: 
               throw new IllegalArgumentException("Instruccion invalida");
@@ -174,6 +188,7 @@ public class Maquina {
   public void write(int pos){
     if(ram.get(pos).get_dir() == null){
       int aux = registros.get_registros(ram.get(pos).get_ele()-1);
+      System.out.println(aux);
       c_salida.write(aux);  
     }
     else if(ram.get(pos).get_dir().equals("*")){ //falta mejorar
@@ -210,6 +225,7 @@ public class Maquina {
     }
     else if(ram.get(pos).get_dir().equals("=")){
       acumulador = acumulador - ram.get(pos).get_ele();
+      System.out.println(ram.get(pos).get_ele());
     }      
   }
   
@@ -250,7 +266,7 @@ public class Maquina {
     int aux = 0;
     for(int i = 0; i < get_size(); i++){
       if(ram.get(i).get_etq() != null){
-        if (ram.get(pos).get_ins().equals(ram.get(i).get_etq()))
+        if (ram.get(pos).get_dir().equals(ram.get(i).get_etq()))
           aux = i;
       
       } 
@@ -263,7 +279,7 @@ public class Maquina {
       int aux = 0;
       for(int i = 0; i < get_size(); i++){
         if((ram.get(i).get_etq() != null)){
-          if (ram.get(pos).get_ins().equals(ram.get(i).get_etq()))
+          if (ram.get(pos).get_dir().equals(ram.get(i).get_etq()))
             aux = i;
         }
       }
@@ -281,10 +297,12 @@ public class Maquina {
       int aux = 0;
       for(int i = 0; i < get_size(); i++){
         if((ram.get(i).get_etq() != null)){
-          if (ram.get(pos).get_ins().equals(ram.get(i).get_etq()))
-            aux = i;
+          if (ram.get(pos).get_dir().equals(ram.get(i).get_etq())){
+              aux = i;
+          }
         }
       }
+      System.out.println(aux);
       return aux;
     }
     else{ 
